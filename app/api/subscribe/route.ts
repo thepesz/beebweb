@@ -12,11 +12,18 @@ export async function POST(request: Request) {
       );
     }
 
-    // Log for now - you'll connect Google Sheets here later
-    console.log('New signup:', email, new Date().toISOString());
+    // Send to Formspree
+    const formspreeResponse = await fetch('https://formspree.io/f/mvgllvza', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ email }),
+    });
 
-    // TODO: Add Google Sheets integration here
-    // For now, emails are logged to console
+    if (!formspreeResponse.ok) {
+      throw new Error('Failed to submit to Formspree');
+    }
 
     return NextResponse.json({ success: true });
   } catch (error) {
