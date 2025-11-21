@@ -83,7 +83,7 @@ export default async function Image() {
             fontWeight: 300,
           }}
         >
-          Science. Without the hardware.
+          Science...
         </div>
       </div>
     ),
