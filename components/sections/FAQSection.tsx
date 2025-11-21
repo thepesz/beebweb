@@ -23,7 +23,11 @@ export default function FAQSection() {
     },
     {
       question: "What metrics does Beebsi track?",
-      answer: "Beebsi tracks HRV (heart rate variability), resting heart rate, sleep quality and duration, respiratory rate, oxygen saturation (SpO₂), and workout strain. All data comes from Apple Health and Strava."
+      answer: (
+        <>
+          Beebsi tracks <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5624990/" target="_blank" rel="noopener noreferrer" className="text-blue-400 hover:text-blue-300 underline">HRV (heart rate variability)</a>, resting heart rate, <a href="https://www.sleepfoundation.org/how-sleep-works/why-do-we-need-sleep" target="_blank" rel="noopener noreferrer" className="text-blue-400 hover:text-blue-300 underline">sleep quality and duration</a>, respiratory rate, <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6770027/" target="_blank" rel="noopener noreferrer" className="text-blue-400 hover:text-blue-300 underline">oxygen saturation (SpO₂)</a>, and workout strain. Research shows these metrics are essential for <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6761819/" target="_blank" rel="noopener noreferrer" className="text-blue-400 hover:text-blue-300 underline">monitoring athletic recovery</a> and optimizing performance. All data comes from Apple Health and Strava.
+        </>
+      )
     },
     {
       question: "How does Beebsi calculate my recovery score?",
@@ -51,7 +55,9 @@ export default function FAQSection() {
       "name": faq.question,
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": faq.answer
+        "text": typeof faq.answer === 'string'
+          ? faq.answer
+          : "Beebsi tracks HRV (heart rate variability), resting heart rate, sleep quality and duration, respiratory rate, oxygen saturation (SpO₂), and workout strain. Research shows these metrics are essential for monitoring athletic recovery and optimizing performance. All data comes from Apple Health and Strava."
       }
     }))
   };
