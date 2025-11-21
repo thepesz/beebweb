@@ -107,10 +107,10 @@ export default function HeroSection() {
       {/* Content */}
       <article ref={contentRef} className="relative z-10 text-center px-6 max-w-5xl">
         <h1 className="text-4xl md:text-6xl lg:text-7xl font-semibold text-white leading-tight tracking-tight">
-          Beebsi: Track Your Recovery, Sleep & Strain
+          What if you woke up knowing exactly how ready your body is?
         </h1>
         <p className="text-xl md:text-2xl lg:text-3xl font-light text-white/80 mt-6 max-w-4xl mx-auto">
-          What if you woke up knowing exactly how ready your body is?
+          Beebsi: Track Your Recovery, Sleep & Strain.
         </p>
       </article>
 

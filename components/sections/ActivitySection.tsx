@@ -93,7 +93,7 @@ export default function ActivitySection() {
           Science.<br />Without the hardware.
         </h2>
         <p className="text-lg md:text-xl lg:text-2xl font-light text-white/80 tracking-wide max-w-3xl mx-auto px-4">
-          No bands. No rings. Just your phone and the intelligence you already wear.
+          No special hardware required — Beebsi syncs with any compatible wearable. Intelligence you already wear.
         </p>
       </article>
     </section>
