@@ -63,7 +63,6 @@ export const metadata: Metadata = {
   creator: "Beebsi",
   publisher: "Beebsi",
   alternates: {
-    canonical: "https://beebsi.com",
     languages: {
       'en': 'https://beebsi.com',
       'pl': 'https://beebsi.pl',
