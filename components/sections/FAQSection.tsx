@@ -1,6 +1,13 @@
 'use client';
 
+import { useState } from 'react';
+
 export default function FAQSection() {
+  const [openIndex, setOpenIndex] = useState<number | null>(null);
+
+  const toggleFAQ = (index: number) => {
+    setOpenIndex(openIndex === index ? null : index);
+  };
   const faqs = [
     {
       question: "What is Beebsi?",
@@ -61,20 +68,51 @@ export default function FAQSection() {
             Frequently Asked Questions
           </h2>
 
-          <div className="space-y-6">
-            {faqs.map((faq, index) => (
-              <div
-                key={index}
-                className="bg-white/5 border border-white/10 rounded-lg p-6 hover:bg-white/10 transition-all duration-300"
-              >
-                <h3 className="text-xl font-semibold text-white mb-3">
-                  {faq.question}
-                </h3>
-                <p className="text-white/70 leading-relaxed">
-                  {faq.answer}
-                </p>
-              </div>
-            ))}
+          <div className="space-y-4">
+            {faqs.map((faq, index) => {
+              const isOpen = openIndex === index;
+              return (
+                <div
+                  key={index}
+                  className="bg-white/5 border border-white/10 rounded-lg overflow-hidden transition-all duration-300 hover:border-white/20"
+                >
+                  <button
+                    onClick={() => toggleFAQ(index)}
+                    className="w-full px-6 py-5 flex items-center justify-between text-left hover:bg-white/5 transition-colors duration-200"
+                    aria-expanded={isOpen}
+                  >
+                    <h3 className="text-lg md:text-xl font-semibold text-white pr-8">
+                      {faq.question}
+                    </h3>
+                    <svg
+                      className={`w-6 h-6 text-white/60 flex-shrink-0 transition-transform duration-300 ${
+                        isOpen ? 'rotate-180' : ''
+                      }`}
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M19 9l-7 7-7-7"
+                      />
+                    </svg>
+                  </button>
+
+                  <div
+                    className={`transition-all duration-300 ease-in-out ${
+                      isOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
+                    }`}
+                  >
+                    <p className="px-6 pb-5 pt-0 ml-0 md:ml-4 text-white/70 leading-relaxed border-l-2 border-blue-500/30 pl-4">
+                      {faq.answer}
+                    </p>
+                  </div>
+                </div>
+              );
+            })}
           </div>
 
           {/* Hidden content for AI crawlers */}
