@@ -106,9 +106,11 @@ export default function FAQSection() {
                       isOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
                     }`}
                   >
-                    <p className="px-6 pb-5 pt-0 ml-0 md:ml-4 text-white/70 leading-relaxed border-l-2 border-blue-500/30 pl-4">
-                      {faq.answer}
-                    </p>
+                    <div className="px-6 pb-5 mx-6 mt-2">
+                      <p className="text-white/70 leading-relaxed pl-6 py-4 border-l-4 border-blue-500/40 bg-white/5 rounded-r-lg">
+                        {faq.answer}
+                      </p>
+                    </div>
                   </div>
                 </div>
               );
