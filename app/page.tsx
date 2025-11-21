@@ -2,6 +2,7 @@ import HeroSection from '@/components/sections/HeroSection';
 import DataSection from '@/components/sections/DataSection';
 import ActivitySection from '@/components/sections/ActivitySection';
 import SkiSection from '@/components/sections/SkiSection';
+import FAQSection from '@/components/sections/FAQSection';
 import EmailSection from '@/components/sections/EmailSection';
 
 export default function Home() {
@@ -21,6 +22,7 @@ export default function Home() {
       <DataSection />
       <ActivitySection />
       <SkiSection />
+      <FAQSection />
       <EmailSection />
     </main>
   );

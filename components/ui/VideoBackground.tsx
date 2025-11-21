@@ -5,9 +5,10 @@ import { useRef, useEffect } from 'react';
 interface VideoBackgroundProps {
   src: string;
   className?: string;
+  ariaLabel?: string;
 }
 
-export default function VideoBackground({ src, className = '' }: VideoBackgroundProps) {
+export default function VideoBackground({ src, className = '', ariaLabel }: VideoBackgroundProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {
@@ -36,8 +37,11 @@ export default function VideoBackground({ src, className = '' }: VideoBackground
         playsInline
         preload="auto"
         autoPlay
+        aria-label={ariaLabel || 'Background video'}
+        title={ariaLabel || 'Background video'}
       >
         <source src={src} type="video/mp4" />
+        {ariaLabel && <track kind="descriptions" label="Video description" />}
       </video>
       {/* Gradient overlay */}
       <div className="absolute inset-0 bg-gradient-to-b from-black/30 to-black/50" />

@@ -81,7 +81,10 @@ export default function SkiSection() {
         className="fixed inset-0 w-full h-full"
         style={{ opacity: 0 }}
       >
-        <VideoBackground src="/videos/ski.mp4" />
+        <VideoBackground
+          src="/videos/ski.mp4"
+          ariaLabel="Athlete skiing showing winter sports performance tracking and strain monitoring for endurance athletes"
+        />
       </div>
 
       {/* Content */}

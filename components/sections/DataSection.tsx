@@ -81,7 +81,10 @@ export default function DataSection() {
         className="fixed inset-0 w-full h-full"
         style={{ opacity: 0 }}
       >
-        <VideoBackground src="/videos/data.mp4" />
+        <VideoBackground
+          src="/videos/data.mp4"
+          ariaLabel="Data visualization showing health metrics, sleep tracking, HRV analysis, and fitness performance charts"
+        />
       </div>
 
       {/* Content */}

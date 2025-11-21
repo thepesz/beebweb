@@ -81,7 +81,10 @@ export default function ActivitySection() {
         className="fixed inset-0 w-full h-full"
         style={{ opacity: 0 }}
       >
-        <VideoBackground src="/videos/activity_beach.mp4" />
+        <VideoBackground
+          src="/videos/activity_beach.mp4"
+          ariaLabel="Person exercising at the beach showing outdoor fitness activity tracking without wearable devices"
+        />
       </div>
 
       {/* Content */}

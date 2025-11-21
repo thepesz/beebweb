@@ -98,7 +98,10 @@ export default function HeroSection() {
         className="fixed inset-0 w-full h-full"
         style={{ opacity: 1 }}
       >
-        <VideoBackground src="/videos/recovery.mp4" />
+        <VideoBackground
+          src="/videos/recovery.mp4"
+          ariaLabel="Person recovering from exercise showing health tracking visualization with HRV and recovery metrics"
+        />
       </div>
 
       {/* Content */}
