@@ -10,7 +10,7 @@ gsap.registerPlugin(ScrollTrigger);
 export default function HeroSection() {
   const sectionRef = useRef<HTMLElement>(null);
   const videoContainerRef = useRef<HTMLDivElement>(null);
-  const contentRef = useRef<HTMLDivElement>(null);
+  const contentRef = useRef<HTMLElement>(null);
   const scrollHintRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -105,11 +105,11 @@ export default function HeroSection() {
       </div>
 
       {/* Content */}
-      <div ref={contentRef} className="relative z-10 text-center px-6 max-w-5xl">
+      <article ref={contentRef} className="relative z-10 text-center px-6 max-w-5xl">
         <h1 className="text-4xl md:text-6xl lg:text-7xl font-semibold text-white leading-tight tracking-tight">
           What if you woke up knowing exactly how ready your body is?
         </h1>
-      </div>
+      </article>
 
       {/* Scroll hint */}
       <div

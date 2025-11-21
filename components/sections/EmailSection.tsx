@@ -8,7 +8,7 @@ gsap.registerPlugin(ScrollTrigger);
 
 export default function EmailSection() {
   const sectionRef = useRef<HTMLElement>(null);
-  const formContainerRef = useRef<HTMLDivElement>(null);
+  const formContainerRef = useRef<HTMLElement>(null);
   const [email, setEmail] = useState('');
   const [submitted, setSubmitted] = useState(false);
 
@@ -67,7 +67,7 @@ export default function EmailSection() {
       ref={sectionRef}
       className="relative min-h-screen flex items-center justify-center bg-black"
     >
-      <div
+      <article
         ref={formContainerRef}
         className="relative z-10 w-full max-w-md px-4 md:px-6 py-20"
       >
@@ -106,7 +106,7 @@ export default function EmailSection() {
         <p className="mt-8 text-center text-white/50 text-lg font-light">
           Coming soon to iOS.
         </p>
-      </div>
+      </article>
     </section>
   );
 }

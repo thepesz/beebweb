@@ -10,7 +10,7 @@ gsap.registerPlugin(ScrollTrigger);
 export default function SkiSection() {
   const sectionRef = useRef<HTMLElement>(null);
   const videoContainerRef = useRef<HTMLDivElement>(null);
-  const contentRef = useRef<HTMLDivElement>(null);
+  const contentRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
     const section = sectionRef.current;
@@ -88,14 +88,14 @@ export default function SkiSection() {
       </div>
 
       {/* Content */}
-      <div ref={contentRef} className="relative z-10 text-center px-4 md:px-6 max-w-5xl">
+      <article ref={contentRef} className="relative z-10 text-center px-4 md:px-6 max-w-5xl">
         <h2 className="text-4xl md:text-6xl lg:text-7xl font-semibold text-white leading-tight tracking-tight mb-4 md:mb-6">
           Everything you need.<br />Nothing you don't.
         </h2>
         <p className="text-lg md:text-xl lg:text-2xl font-light text-white/80 tracking-wide max-w-3xl mx-auto px-4">
           One application. Complete insights. Total control over your performance.
         </p>
-      </div>
+      </article>
     </section>
   );
 }
