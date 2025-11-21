@@ -11,9 +11,9 @@ export default function Home() {
       {/* Fixed header with app name */}
       <header className="fixed top-0 left-0 right-0 z-50 py-6 md:py-8">
         <div className="max-w-7xl mx-auto pl-16 md:pl-20 lg:pl-24 pr-8">
-          <h1 className="text-xl md:text-2xl lg:text-3xl font-semibold text-white tracking-tight">
+          <div className="text-xl md:text-2xl lg:text-3xl font-semibold text-white tracking-tight">
             Beebsi
-          </h1>
+          </div>
         </div>
       </header>
 

@@ -6,7 +6,6 @@ Allow: /
 
 # Sitemaps
 Sitemap: https://beebsi.com/sitemap.xml
-Sitemap: https://beebsi.pl/sitemap.xml
 
 # Crawl-delay for politeness
 Crawl-delay: 1

@@ -35,7 +35,7 @@ export default function VideoBackground({ src, className = '', ariaLabel }: Vide
         muted
         loop
         playsInline
-        preload="auto"
+        preload="metadata"
         autoPlay
         aria-label={ariaLabel || 'Background video'}
         title={ariaLabel || 'Background video'}

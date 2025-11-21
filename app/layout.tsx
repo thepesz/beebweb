@@ -7,17 +7,21 @@ import GoogleAnalytics from "@/components/GoogleAnalytics";
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
+  display: "swap",
+  preload: true,
 });
 
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
+  display: "swap",
+  preload: true,
 });
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://beebsi.com'),
-  title: "Beebsi - Your Body. Decoded.",
-  description: "Track your recovery, sleep, and strain with science-based insights. Free health tracking app for iOS using Apple Health and Strava. No wearable or subscription required. HRV, sleep analysis, and performance optimization powered by your iPhone.",
+  title: "Beebsi: Track Recovery, Sleep, Strain, Activities | iOS Health App",
+  description: "Track your recovery, sleep, strain with science-based insights. Free iOS health app using Apple Health. Hardware independent.",
   keywords: [
     // Core Features (English)
     "health tracking", "fitness tracking", "recovery tracking", "sleep tracking", "strain tracking", "HRV tracking", "heart rate variability", "resting heart rate", "sleep score", "recovery score", "readiness score", "performance tracking",
@@ -59,15 +63,15 @@ export const metadata: Metadata = {
   creator: "Beebsi",
   publisher: "Beebsi",
   alternates: {
-    canonical: "/",
+    canonical: "https://beebsi.com",
     languages: {
       'en': 'https://beebsi.com',
       'pl': 'https://beebsi.pl',
     },
   },
   openGraph: {
-    title: "Beebsi - Your Body. Decoded.",
-    description: "Track your recovery, sleep, and strain with science-based insights. Free health tracking app for iOS. No wearable or subscription required.",
+    title: "Beebsi: Track Recovery, Sleep, Strain, Activities | iOS Health App",
+    description: "Track your recovery, sleep, strain with science-based insights. Free iOS health app using Apple Health. Hardware independent.",
     type: "website",
     url: "https://beebsi.com",
     siteName: "Beebsi",
@@ -84,8 +88,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Beebsi - Your Body. Decoded.",
-    description: "Track your recovery, sleep, and strain with science-based insights. Free health tracking app for iOS. No wearable required.",
+    title: "Beebsi: Track Recovery, Sleep, Strain, Activities | iOS Health App",
+    description: "Track your recovery, sleep, strain with science-based insights. Free iOS health app using Apple Health. Hardware independent.",
     images: ["/opengraph-image"],
     creator: "@beebsi",
   },
