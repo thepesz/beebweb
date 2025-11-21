@@ -93,7 +93,7 @@ export default function DataSection() {
           Your body speaks.<br />We listen.
         </h2>
         <p className="text-lg md:text-xl lg:text-2xl font-light text-white/80 tracking-wide max-w-3xl mx-auto px-4">
-          Track recovery, strain, and sleep with precision. No guesswork. Just science.
+          Beebsi decodes the signals from your wearables and turns them into clear, actionable guidance designed around you. Your health data becomes a conversation.Just science...
         </p>
       </article>
     </section>

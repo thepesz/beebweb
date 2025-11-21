@@ -11,39 +11,32 @@ export default function FAQSection() {
   const faqs = [
     {
       question: "What is Beebsi?",
-      answer: "Beebsi is a free health tracking app for iOS that helps you track recovery, sleep, and strain using science-based insights. It integrates with Apple Health and Strava, requiring no additional wearable hardware or subscription."
+      answer: "Beebsi is an intelligent health and wellness application designed to help you understand your body and live healthier every day. By integrating data from your wearable devices, Beebsi analyzes your sleep, recovery, stress, heart rate, activity, and overall wellness to give you clear, science-based insights into your health. Built on proven physiological research, Beebsi helps you maintain the right balance between training and recovery, make smarter lifestyle decisions, improve sleep and daily energy levels, avoid overtraining and burnout, and stay consistent with healthy habits. Beebsi also includes AI-powered algorithms that adapt to your personal patterns and respond to changes in your physiology. These models learn from your data over time, allowing the app to predict recovery trends, detect unusual stress responses, personalize daily recommendations, adjust training load guidance dynamically, and provide clear explanations backed by scientific evidence. Whether you’re an athlete or simply want to feel better, Beebsi guides you with personalized, AI-supported insights so you can train smarter, recover properly, and build long-term well-being."
     },
     {
-      question: "Do I need a wearable device to use Beebsi?",
-      answer: "No! Beebsi works with your iPhone and Apple Health data. You don't need to buy any additional hardware like bands or rings. If you have an Apple Watch, Beebsi will use that data too."
+      question: "Do I need a dedicated wearable device to use Beebsi?",
+      answer: "No, you don’t need a dedicated wearable device to use Beebsi. The app works seamlessly with any wearable that can share its data with Apple Health. This means you can use Beebsi with popular devices such as the Apple Watch and many third-party wearables that sync through Apple Health. In the future, Beebsi will also support direct integrations with major platforms, including Garmin, Fitbit, WHOOP, and Samsung, allowing even more users to connect their devices without relying on Apple Health."
     },
     {
-      question: "Is Beebsi really free?",
-      answer: "Yes, Beebsi is completely free with no subscription required. We believe health tracking should be accessible to everyone."
+      question: "Is Beebsi free?",
+      answer: "Yes, Beebsi offers a free version with all the essential features because we believe that health tracking should be accessible to everyone. You can use Beebsi to monitor your core wellness metrics without paying anything. If you want deeper insights, more advanced analytics, long-term trends, personalized recommendations, and richer interpretations of your health data, you can upgrade to the Pro plan. This paid version unlocks enhanced AI-driven analysis and provides a more comprehensive understanding of your overall well-being."
     },
     {
       question: "What metrics does Beebsi track?",
       answer: (
         <>
-          Beebsi tracks <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5624990/" target="_blank" rel="noopener noreferrer" className="text-blue-400 hover:text-blue-300 underline">HRV (heart rate variability)</a>, resting heart rate, <a href="https://www.sleepfoundation.org/how-sleep-works/why-do-we-need-sleep" target="_blank" rel="noopener noreferrer" className="text-blue-400 hover:text-blue-300 underline">sleep quality and duration</a>, respiratory rate, <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6770027/" target="_blank" rel="noopener noreferrer" className="text-blue-400 hover:text-blue-300 underline">oxygen saturation (SpO₂)</a>, and workout strain. Research shows these metrics are essential for <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6761819/" target="_blank" rel="noopener noreferrer" className="text-blue-400 hover:text-blue-300 underline">monitoring athletic recovery</a> and optimizing performance. All data comes from Apple Health and Strava.
+          Beebsi tracks a set of core health and performance metrics that are scientifically proven to reflect your overall well-being, recovery status, and training readiness. These metrics help you understand how your body responds to stress, sleep, and activity so you can optimize your daily habits, improve recovery, and train more effectively.
+          Beebsi monitors key areas such as heart rate, resting heart rate, heart rate variability (<a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5624990/" target="_blank" rel="noopener noreferrer" className="text-blue-400 hover:text-blue-300 underline">HRV (heart rate variability)</a>), sleep duration, sleep quality, sleep consistency, recovery, daily readiness, stress indicators, physical activity, training load, energy balance, and daily strain. Together, these <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6761819/" target="_blank" rel="noopener noreferrer" className="text-blue-400 hover:text-blue-300 underline">metrics</a>give you a clear and accurate picture of your health and help guide you toward better performance, improved recovery, and a more balanced lifestyle.
         </>
       )
-    },
-    {
-      question: "How does Beebsi calculate my recovery score?",
-      answer: "Your recovery score is calculated using three main factors: HRV (40% weight), resting heart rate (30% weight), and sleep quality (30% weight). The algorithm is based on peer-reviewed sports science research."
     },
     {
       question: "When will Beebsi launch?",
       answer: "Beebsi is launching in 2026 on the iOS App Store. Sign up on our homepage to be notified when we launch and get early access."
     },
     {
-      question: "Does Beebsi work with Strava?",
-      answer: "Yes! Beebsi integrates with Strava to pull your workout data and calculate strain based on your activities. This integration is optional but recommended for athletes."
-    },
-    {
       question: "What makes Beebsi different from other health apps?",
-      answer: "Unlike competitors that require expensive hardware subscriptions, Beebsi is completely free and uses only your iPhone and existing devices. We focus on science-based metrics without the marketing hype."
+      answer: "Beebsi stands out by combining science-based health insights with intelligent, adaptive AI that learns from your personal data over time. Unlike most health apps that simply count steps or display raw charts, Beebsi focuses on understanding how your body actually works and what it needs each day. It interprets data from your wearable devices in a way that aligns with modern physiology, giving you clear explanations instead of confusing numbers. Beebsi also emphasizes balance—helping you avoid overtraining, manage stress, improve sleep quality, and maintain long-term health. Its recovery, stress, and strain models are designed to work together, providing a complete picture of how your lifestyle impacts your well-being. Additionally, Beebsi is built to be accessible: the core features are free, and it works with any device that syncs through Apple Health. With its clean design, personalized insights, and advanced AI algorithms, Beebsi gives you guidance that is practical, easy to understand, and truly tailored to your body—not just generic advice.."
     }
   ];
 
@@ -57,7 +50,7 @@ export default function FAQSection() {
         "@type": "Answer",
         "text": typeof faq.answer === 'string'
           ? faq.answer
-          : "Beebsi tracks HRV (heart rate variability), resting heart rate, sleep quality and duration, respiratory rate, oxygen saturation (SpO₂), and workout strain. Research shows these metrics are essential for monitoring athletic recovery and optimizing performance. All data comes from Apple Health and Strava."
+          : "Beebsi tracks HRV (heart rate variability), resting heart rate, sleep quality and duration, respiratory rate, oxygen saturation (SpO₂), and workout strain. Research shows these metrics are essential for monitoring athletic recovery and optimizing performance."
       }
     }))
   };
