@@ -35,8 +35,18 @@ export default function EmailSection() {
     };
   }, []);
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    // Honeypot check - if filled, it's a bot
+    const formData = new FormData(e.currentTarget);
+    const honeypot = formData.get('website');
+
+    if (honeypot) {
+      // Silent fail for bots
+      console.log('Bot detected, submission blocked');
+      return;
+    }
 
     try {
       // Send to Google Sheets via API route
@@ -79,18 +89,39 @@ export default function EmailSection() {
           A revolutionary health application is coming. Get notified when we launch.
         </p>
 
-        <form onSubmit={handleSubmit} className="flex flex-col gap-3 md:gap-4">
+        <form onSubmit={handleSubmit} className="flex flex-col gap-3 md:gap-4" aria-label="Email signup form">
+          <div>
+            <label htmlFor="email-input" className="sr-only">
+              Email address
+            </label>
+            <input
+              id="email-input"
+              name="email"
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="your@email.com"
+              autoComplete="email"
+              required
+              aria-required="true"
+              aria-label="Enter your email address"
+              className="w-full px-4 md:px-5 py-2.5 md:py-3 text-sm md:text-base bg-white/5 border border-white/10 rounded-lg text-white placeholder:text-white/40 focus:outline-none focus:bg-white/10 focus:border-blue-500/60 focus:ring-2 focus:ring-blue-500/10 transition-all duration-300"
+            />
+          </div>
+
+          {/* Honeypot field to prevent bots */}
           <input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            placeholder="your@email.com"
-            required
-            className="w-full px-4 md:px-5 py-2.5 md:py-3 text-sm md:text-base bg-white/5 border border-white/10 rounded-lg text-white placeholder:text-white/40 focus:outline-none focus:bg-white/10 focus:border-blue-500/60 focus:ring-2 focus:ring-blue-500/10 transition-all duration-300"
+            type="text"
+            name="website"
+            tabIndex={-1}
+            autoComplete="off"
+            aria-hidden="true"
+            className="absolute opacity-0 pointer-events-none"
           />
 
           <button
             type="submit"
+            aria-label="Subscribe to Beebsi launch notifications"
             className="w-full px-6 md:px-8 py-2.5 md:py-3 text-sm md:text-base font-semibold bg-blue-500 text-white rounded-lg hover:bg-blue-600 hover:-translate-y-1 hover:shadow-xl hover:shadow-blue-500/40 active:translate-y-0 transition-all duration-300"
           >
             Notify Me
