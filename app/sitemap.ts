@@ -1,24 +1,21 @@
 import { MetadataRoute } from 'next'
+import { headers } from 'next/headers'
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrls = ['https://beebsi.com', 'https://beebsi.pl']
+  const headersList = headers()
+  const host = headersList.get('host') || 'beebsi.com'
 
-  const sitemapEntries: MetadataRoute.Sitemap = []
+  // Determine the base URL based on the current host
+  const baseUrl = host.includes('beebsi.pl')
+    ? 'https://beebsi.pl'
+    : 'https://beebsi.com'
 
-  baseUrls.forEach(baseUrl => {
-    sitemapEntries.push({
+  return [
+    {
       url: baseUrl,
       lastModified: new Date(),
       changeFrequency: 'weekly',
       priority: 1.0,
-      alternates: {
-        languages: {
-          en: 'https://beebsi.com',
-          pl: 'https://beebsi.pl',
-        },
-      },
-    })
-  })
-
-  return sitemapEntries
+    },
+  ]
 }
