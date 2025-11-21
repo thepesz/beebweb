@@ -24,10 +24,12 @@ export default function StructuredData() {
     "description": "Track your recovery, sleep, and strain with science-based insights. Free health tracking app for iOS using Apple Health and Strava. No wearable or subscription required. HRV, sleep analysis, and performance optimization powered by your iPhone.",
     "operatingSystem": "iOS",
     "applicationCategory": "HealthApplication",
+    "datePublished": "2026",
     "offers": {
       "@type": "Offer",
       "price": "0",
-      "priceCurrency": "USD"
+      "priceCurrency": "USD",
+      "availabilityStarts": "2026-06-01"
     },
     "aggregateRating": {
       "@type": "AggregateRating",
@@ -35,7 +37,7 @@ export default function StructuredData() {
       "ratingCount": "1"
     },
     "screenshot": "https://beebsi.com/opengraph-image",
-    "releaseNotes": "Coming soon to iOS App Store",
+    "releaseNotes": "Expected launch: 2026. Free health tracking for iOS with Apple Health and Strava integration.",
     "softwareVersion": "1.0",
     "featureList": [
       "HRV (Heart Rate Variability) tracking",

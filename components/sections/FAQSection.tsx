@@ -35,7 +35,7 @@ export default function FAQSection() {
     },
     {
       question: "When will Beebsi launch?",
-      answer: "Beebsi is coming soon to the iOS App Store. Sign up on our homepage to be notified when we launch and get early access."
+      answer: "Beebsi is launching in 2026 on the iOS App Store. Sign up on our homepage to be notified when we launch and get early access."
     },
     {
       question: "Does Beebsi work with Strava?",

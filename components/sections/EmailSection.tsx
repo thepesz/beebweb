@@ -104,7 +104,7 @@ export default function EmailSection() {
         )}
 
         <p className="mt-8 text-center text-white/50 text-lg font-light">
-          Coming soon to iOS.
+          Coming 2026 to iOS.
         </p>
       </article>
     </section>
