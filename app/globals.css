@@ -3,6 +3,10 @@
 :root {
   --background: #000000;
   --foreground: #ffffff;
+  --cyan: #00D4FF;
+  --amber: #FFB000;
+  --cyan-glow: rgba(0, 212, 255, 0.15);
+  --cyan-glow-strong: rgba(0, 212, 255, 0.3);
 }
 
 @theme inline {
@@ -18,9 +22,9 @@
   box-sizing: border-box;
 }
 
+/* SCROLL FIX: Do NOT set overflow-x on html — it breaks mouse-wheel scrolling
+   in Chromium browsers. Only hide horizontal overflow on body. */
 html {
-  overflow-x: hidden;
-  /* Remove smooth scrolling to allow GSAP full control */
   scroll-behavior: auto;
 }
 
@@ -32,16 +36,521 @@ body {
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  /* Prevent overscroll bounce on iOS */
-  overscroll-behavior: none;
+  overscroll-behavior-x: none;
 }
 
-/* Add gradient for radial vignette */
+/* ══════════════════════════════════════════
+   HUD BACKGROUND SYSTEM  (enhanced visibility)
+   ══════════════════════════════════════════ */
+
+/* Grid overlay - cyan lines forming a 60x60px grid, PROMINENTLY visible */
+.hud-grid {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background-image:
+    linear-gradient(rgba(0, 212, 255, 0.12) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 212, 255, 0.12) 1px, transparent 1px);
+  background-size: 60px 60px;
+  mask-image: radial-gradient(ellipse 85% 75% at 50% 50%, black 20%, transparent 85%);
+  -webkit-mask-image: radial-gradient(ellipse 85% 75% at 50% 50%, black 20%, transparent 85%);
+}
+
+/* Scan line effect - horizontal line sweeping down the page, BRIGHTER */
+.hud-scanline {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.hud-scanline::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent 0px,
+    transparent 3px,
+    rgba(0, 212, 255, 0.03) 3px,
+    rgba(0, 212, 255, 0.03) 4px
+  );
+  pointer-events: none;
+}
+
+.hud-scanline::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 80px;
+  background: linear-gradient(
+    180deg,
+    transparent 0%,
+    rgba(0, 212, 255, 0.06) 30%,
+    rgba(0, 212, 255, 0.1) 50%,
+    rgba(0, 212, 255, 0.06) 70%,
+    transparent 100%
+  );
+  animation: scanline 6s linear infinite;
+  will-change: transform;
+}
+
+@keyframes scanline {
+  0% { transform: translateY(-80px); }
+  100% { transform: translateY(100vh); }
+}
+
+/* Gradient vignette - STRONGER darkening on edges */
+.hud-vignette {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  background: radial-gradient(ellipse 60% 50% at 50% 50%, transparent 0%, rgba(0, 0, 0, 0.7) 100%);
+}
+
+/* Noise texture - increased opacity */
+.hud-noise {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0.04;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+  background-size: 256px 256px;
+}
+
+/* ══════════════════════════════════════════
+   HUD CORNER BRACKETS  (enhanced)
+   ══════════════════════════════════════════ */
+
+.hud-corners {
+  position: relative;
+}
+
+.hud-corners::before,
+.hud-corners::after {
+  content: '';
+  position: absolute;
+  width: 28px;
+  height: 28px;
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* Top-left corner */
+.hud-corners::before {
+  top: -4px;
+  left: -4px;
+  border-top: 1.5px solid rgba(0, 212, 255, 0.3);
+  border-left: 1.5px solid rgba(0, 212, 255, 0.3);
+}
+
+/* Bottom-right corner */
+.hud-corners::after {
+  bottom: -4px;
+  right: -4px;
+  border-bottom: 1.5px solid rgba(0, 212, 255, 0.3);
+  border-right: 1.5px solid rgba(0, 212, 255, 0.3);
+}
+
+/* Additional corners via inner wrapper */
+.hud-corners-inner {
+  position: relative;
+}
+
+.hud-corners-inner::before,
+.hud-corners-inner::after {
+  content: '';
+  position: absolute;
+  width: 28px;
+  height: 28px;
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* Top-right corner */
+.hud-corners-inner::before {
+  top: -4px;
+  right: -4px;
+  border-top: 1.5px solid rgba(0, 212, 255, 0.3);
+  border-right: 1.5px solid rgba(0, 212, 255, 0.3);
+}
+
+/* Bottom-left corner */
+.hud-corners-inner::after {
+  bottom: -4px;
+  left: -4px;
+  border-bottom: 1.5px solid rgba(0, 212, 255, 0.3);
+  border-left: 1.5px solid rgba(0, 212, 255, 0.3);
+}
+
+/* ══════════════════════════════════════════
+   SCROLL-TRIGGERED REVEAL ANIMATIONS
+   ══════════════════════════════════════════ */
+
+.reveal {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+              transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.reveal-delay-1 { transition-delay: 0.1s; }
+.reveal-delay-2 { transition-delay: 0.2s; }
+.reveal-delay-3 { transition-delay: 0.3s; }
+.reveal-delay-4 { transition-delay: 0.4s; }
+
+/* Reveal from left */
+.reveal-left {
+  opacity: 0;
+  transform: translateX(-60px);
+  transition: opacity 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+              transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.reveal-left.visible {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* Reveal from right */
+.reveal-right {
+  opacity: 0;
+  transform: translateX(60px);
+  transition: opacity 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+              transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.reveal-right.visible {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* Scale reveal for phone mockups */
+.reveal-scale {
+  opacity: 0;
+  transform: scale(0.92);
+  transition: opacity 1s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+              transform 1s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.reveal-scale.visible {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* ══════════════════════════════════════════
+   PHONE MOCKUP
+   ══════════════════════════════════════════ */
+
+.phone-mockup {
+  position: relative;
+  border-radius: 44px;
+  overflow: hidden;
+  background: #000;
+  /* Realistic iPhone frame with HUD glow */
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.08),
+    0 0 0 2px rgba(60, 60, 67, 0.6),
+    0 0 0 4px rgba(30, 30, 35, 0.9),
+    0 25px 60px -12px rgba(0, 0, 0, 0.8),
+    0 0 50px rgba(0, 212, 255, 0.1);
+  transition: box-shadow 0.5s ease, transform 0.5s ease;
+}
+
+.phone-mockup:hover {
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.12),
+    0 0 0 2px rgba(60, 60, 67, 0.6),
+    0 0 0 4px rgba(30, 30, 35, 0.9),
+    0 30px 70px -12px rgba(0, 0, 0, 0.9),
+    0 0 80px rgba(0, 212, 255, 0.18);
+  transform: scale(1.01);
+}
+
+.phone-mockup img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* HUD scanline overlay on phone mockups */
+.phone-hud-overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 5;
+  border-radius: 44px;
+  overflow: hidden;
+}
+
+.phone-hud-overlay::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent 0px,
+    transparent 2px,
+    rgba(0, 212, 255, 0.02) 2px,
+    rgba(0, 212, 255, 0.02) 3px
+  );
+}
+
+.phone-hud-overlay::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 40px;
+  background: linear-gradient(
+    180deg,
+    transparent 0%,
+    rgba(0, 212, 255, 0.05) 50%,
+    transparent 100%
+  );
+  animation: phone-scan 4s linear infinite;
+}
+
+@keyframes phone-scan {
+  0% { transform: translateY(-40px); }
+  100% { transform: translateY(calc(100vh)); }
+}
+
+/* Dynamic Island notch element */
+.phone-notch {
+  position: absolute;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100px;
+  height: 28px;
+  background: #000;
+  border-radius: 20px;
+  z-index: 10;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.04);
+}
+
+/* 3D perspective container for phone mockups */
+.phone-perspective {
+  perspective: 1200px;
+  perspective-origin: 50% 50%;
+}
+
+.phone-tilt-left {
+  transform: rotateY(5deg) rotateX(1deg);
+  transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  will-change: transform;
+}
+
+.phone-tilt-left:hover {
+  transform: rotateY(2deg) rotateX(0deg);
+}
+
+.phone-tilt-right {
+  transform: rotateY(-5deg) rotateX(1deg);
+  transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  will-change: transform;
+}
+
+.phone-tilt-right:hover {
+  transform: rotateY(-2deg) rotateX(0deg);
+}
+
+.phone-tilt-center {
+  transform: rotateY(0deg) rotateX(2deg);
+  transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  will-change: transform;
+}
+
+.phone-tilt-center:hover {
+  transform: rotateY(0deg) rotateX(0deg);
+}
+
+/* Floating animation for phone mockups */
+@keyframes phone-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-4px); }
+}
+
+.phone-float {
+  animation: phone-float 6s ease-in-out infinite;
+  will-change: transform;
+}
+
+/* Cyan glow underneath phone mockup */
+.phone-glow-base {
+  position: absolute;
+  bottom: -20%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80%;
+  height: 60%;
+  background: radial-gradient(ellipse at center, rgba(0, 212, 255, 0.12) 0%, transparent 70%);
+  pointer-events: none;
+  filter: blur(40px);
+  z-index: -1;
+}
+
+.phone-glow-base-amber {
+  background: radial-gradient(ellipse at center, rgba(255, 176, 0, 0.08) 0%, transparent 70%);
+}
+
+/* ══════════════════════════════════════════
+   GLOW EFFECTS  (enhanced)
+   ══════════════════════════════════════════ */
+
+.glow-cyan {
+  filter: drop-shadow(0 0 30px rgba(0, 212, 255, 0.15));
+}
+
+.glow-cyan-strong {
+  filter: drop-shadow(0 0 50px rgba(0, 212, 255, 0.25));
+}
+
+/* Ambient glow behind phone */
+.phone-glow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 80%;
+  height: 80%;
+  background: radial-gradient(ellipse at center, rgba(0, 212, 255, 0.1) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: -1;
+}
+
+/* ══════════════════════════════════════════
+   PULSING / BREATHING ANIMATIONS
+   ══════════════════════════════════════════ */
+
+@keyframes hud-pulse {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 1; }
+}
+
+.hud-pulse {
+  animation: hud-pulse 3s ease-in-out infinite;
+}
+
+@keyframes hud-glow-pulse {
+  0%, 100% { box-shadow: 0 0 15px rgba(0, 212, 255, 0.05), inset 0 0 15px rgba(0, 212, 255, 0.02); }
+  50% { box-shadow: 0 0 25px rgba(0, 212, 255, 0.12), inset 0 0 25px rgba(0, 212, 255, 0.04); }
+}
+
+.hud-glow-pulse {
+  animation: hud-glow-pulse 4s ease-in-out infinite;
+}
+
+@keyframes dot-pulse {
+  0%, 100% { opacity: 0.4; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.3); }
+}
+
+.dot-pulse {
+  animation: dot-pulse 2s ease-in-out infinite;
+}
+
+/* ══════════════════════════════════════════
+   HUD CARD STYLE
+   ══════════════════════════════════════════ */
+
+.hud-card {
+  position: relative;
+  background: rgba(0, 212, 255, 0.02);
+  border: 1px solid rgba(0, 212, 255, 0.08);
+  border-radius: 12px;
+}
+
+.hud-card::before,
+.hud-card::after {
+  content: '';
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  pointer-events: none;
+}
+
+.hud-card::before {
+  top: -1px;
+  left: -1px;
+  border-top: 1.5px solid rgba(0, 212, 255, 0.25);
+  border-left: 1.5px solid rgba(0, 212, 255, 0.25);
+  border-radius: 12px 0 0 0;
+}
+
+.hud-card::after {
+  bottom: -1px;
+  right: -1px;
+  border-bottom: 1.5px solid rgba(0, 212, 255, 0.25);
+  border-right: 1.5px solid rgba(0, 212, 255, 0.25);
+  border-radius: 0 0 12px 0;
+}
+
+/* ══════════════════════════════════════════
+   SECTION DIVIDERS
+   ══════════════════════════════════════════ */
+
+.section-divider {
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent 0%, rgba(0, 212, 255, 0.25) 50%, transparent 100%);
+}
+
+/* ══════════════════════════════════════════
+   GRADIENT TEXT
+   ══════════════════════════════════════════ */
+
+.text-gradient-cyan {
+  background: linear-gradient(135deg, #00D4FF 0%, #00A3CC 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.text-gradient-cyan-white {
+  background: linear-gradient(135deg, #00D4FF 0%, #ffffff 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.text-gradient-amber {
+  background: linear-gradient(135deg, #FFB000 0%, #FF8C00 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.text-gradient-amber-white {
+  background: linear-gradient(135deg, #FFB000 0%, #ffffff 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ══════════════════════════════════════════
+   RADIAL VIGNETTE
+   ══════════════════════════════════════════ */
+
 .bg-gradient-radial {
   background: radial-gradient(ellipse at center, transparent 0%, rgba(0, 0, 0, 0.4) 100%);
 }
 
-/* Custom scrollbar */
+/* ══════════════════════════════════════════
+   CUSTOM SCROLLBAR
+   ══════════════════════════════════════════ */
+
 ::-webkit-scrollbar {
   width: 10px;
 }
@@ -51,10 +560,175 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.2);
+  background: rgba(0, 212, 255, 0.2);
   border-radius: 5px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 255, 255, 0.3);
+  background: rgba(0, 212, 255, 0.35);
 }
+
+/* ══════════════════════════════════════════
+   SHIELD PULSE (Privacy section)
+   ══════════════════════════════════════════ */
+
+@keyframes shield-pulse {
+  0%, 100% { opacity: 0.6; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.05); }
+}
+
+.shield-pulse {
+  animation: shield-pulse 3s ease-in-out infinite;
+}
+
+/* ══════════════════════════════════════════
+   SUBTLE FLOAT FOR HERO PHONE
+   ══════════════════════════════════════════ */
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+.float {
+  animation: float 6s ease-in-out infinite;
+}
+
+/* ══════════════════════════════════════════
+   SCROLL PARALLAX
+   ══════════════════════════════════════════ */
+
+.parallax-phone {
+  will-change: transform;
+  transition: transform 0.1s linear;
+}
+
+/* ══════════════════════════════════════════
+   HUD ACCENT LINE
+   ══════════════════════════════════════════ */
+
+.hud-accent-line {
+  width: 48px;
+  height: 2px;
+  background: linear-gradient(90deg, rgba(0, 212, 255, 0.5), transparent);
+  margin-bottom: 1.5rem;
+}
+
+.hud-accent-line-amber {
+  background: linear-gradient(90deg, rgba(255, 176, 0, 0.5), transparent);
+}
+
+/* ══════════════════════════════════════════
+   TAG / PILL WITH HUD STYLE
+   ══════════════════════════════════════════ */
+
+.hud-tag {
+  padding: 0.625rem 1.125rem;
+  border-radius: 9999px;
+  border: 1px solid rgba(0, 212, 255, 0.15);
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 0.875rem;
+  background: rgba(0, 212, 255, 0.03);
+  transition: border-color 0.3s, background 0.3s;
+  /* Ensure minimum 48px tap target on mobile */
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hud-tag:hover {
+  border-color: rgba(0, 212, 255, 0.3);
+  background: rgba(0, 212, 255, 0.06);
+}
+
+/* ══════════════════════════════════════════
+   STAGGER ANIMATION DELAY CLASSES (SEO-friendly, replaces inline styles)
+   ══════════════════════════════════════════ */
+
+.stagger-0  { transition-delay: 0s; }
+.stagger-1  { transition-delay: 50ms; }
+.stagger-2  { transition-delay: 100ms; }
+.stagger-3  { transition-delay: 150ms; }
+.stagger-4  { transition-delay: 200ms; }
+.stagger-5  { transition-delay: 250ms; }
+.stagger-6  { transition-delay: 300ms; }
+.stagger-7  { transition-delay: 350ms; }
+.stagger-8  { transition-delay: 400ms; }
+.stagger-9  { transition-delay: 450ms; }
+
+/* ══════════════════════════════════════════
+   AMBIENT GLOW CSS CLASSES (replace inline radial-gradient styles)
+   ══════════════════════════════════════════ */
+
+.glow-ambient-cyan {
+  background: radial-gradient(ellipse at center, rgba(0, 212, 255, 0.06) 0%, transparent 70%);
+}
+
+.glow-ambient-cyan-subtle {
+  background: radial-gradient(ellipse at center, rgba(0, 212, 255, 0.04) 0%, transparent 70%);
+}
+
+/* ══════════════════════════════════════════
+   CONTENT-VISIBILITY: Improve rendering of below-fold sections
+   ══════════════════════════════════════════ */
+
+.section-lazy {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 800px;
+}
+
+/* ══════════════════════════════════════════
+   PREFERS-REDUCED-MOTION: Disable non-essential animations
+   ══════════════════════════════════════════ */
+
+@media (prefers-reduced-motion: reduce) {
+  .hud-scanline::after,
+  .phone-hud-overlay::after {
+    animation: none;
+  }
+
+  .phone-float,
+  .float {
+    animation: none;
+  }
+
+  .hud-pulse,
+  .hud-glow-pulse,
+  .dot-pulse,
+  .shield-pulse {
+    animation: none;
+  }
+
+  .reveal,
+  .reveal-left,
+  .reveal-right,
+  .reveal-scale {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  .phone-tilt-left,
+  .phone-tilt-right,
+  .phone-tilt-center {
+    transition: none;
+  }
+
+  .animate-bounce {
+    animation: none;
+  }
+
+  /* Metrics Breakdown: disable GSAP-driven animations */
+  .metrics-card {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
+
+/* ══════════════════════════════════════════
+   METRICS BREAKDOWN SECTION (scrollytelling)
+   ══════════════════════════════════════════ */
+
+/* No additional CSS needed — all positioning and animation
+   is handled by GSAP ScrollTrigger in the component. */

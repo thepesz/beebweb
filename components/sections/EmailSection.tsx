@@ -1,69 +1,39 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
-import { gsap } from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
-
-gsap.registerPlugin(ScrollTrigger);
+import { useState } from 'react';
+import { useScrollReveal } from '@/hooks/useScrollReveal';
+import { useLocale } from '@/lib/i18n';
+import { translations } from '@/lib/translations';
 
 export default function EmailSection() {
-  const sectionRef = useRef<HTMLElement>(null);
-  const formContainerRef = useRef<HTMLElement>(null);
+  const sectionRef = useScrollReveal<HTMLElement>();
+  const locale = useLocale();
+  const t = translations.email;
   const [email, setEmail] = useState('');
   const [submitted, setSubmitted] = useState(false);
-
-  useEffect(() => {
-    const section = sectionRef.current;
-    const formContainer = formContainerRef.current;
-
-    if (!section || !formContainer) return;
-
-    // Form container animation - simple fade in when section is visible
-    gsap.from(formContainer, {
-      opacity: 0,
-      y: 40,
-      scrollTrigger: {
-        trigger: section,
-        start: 'top 80%',
-        end: 'top 30%',
-        scrub: 1,
-      },
-    });
-
-    return () => {
-      ScrollTrigger.getAll().forEach(trigger => trigger.kill());
-    };
-  }, []);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    // Honeypot check - if filled, it's a bot
+    // Honeypot check
     const formData = new FormData(e.currentTarget);
     const honeypot = formData.get('website');
-
     if (honeypot) {
-      // Silent fail for bots
       console.log('Bot detected, submission blocked');
       return;
     }
 
     try {
-      // Send to Google Sheets via API route
       const response = await fetch('/api/subscribe', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email })
+        body: JSON.stringify({ email }),
       });
 
       if (response.ok) {
         setSubmitted(true);
         setEmail('');
-
-        // Reset success message after 5 seconds
-        setTimeout(() => {
-          setSubmitted(false);
-        }, 5000);
+        setTimeout(() => setSubmitted(false), 5000);
       } else {
         console.error('Failed to submit email');
       }
@@ -74,70 +44,84 @@ export default function EmailSection() {
 
   return (
     <section
+      id="notify"
       ref={sectionRef}
-      className="relative min-h-screen flex items-center justify-center bg-black"
+      className="relative z-10 py-24 md:py-32 lg:py-40 px-6 md:px-10 lg:px-16 section-lazy"
     >
-      <article
-        ref={formContainerRef}
-        className="relative z-10 w-full max-w-md px-4 md:px-6 py-20"
-      >
-        <h2 className="text-4xl md:text-5xl lg:text-6xl font-semibold text-white mb-4 md:mb-6 text-center tracking-tight">
-          Be the first to know.
-        </h2>
+      <div className="section-divider absolute top-0 left-0" />
 
-        <p className="text-lg md:text-xl text-white/70 mb-8 md:mb-12 text-center font-light max-w-xl mx-auto px-4">
-          A revolutionary health application is coming. Get notified when we launch.
-        </p>
+      {/* Background accent */}
+      <div
+        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[400px] pointer-events-none glow-ambient-cyan-subtle"
+      />
 
-        <form onSubmit={handleSubmit} className="flex flex-col gap-3 md:gap-4" aria-label="Email signup form">
-          <div>
-            <label htmlFor="email-input" className="sr-only">
-              Email address
-            </label>
-            <input
-              id="email-input"
-              name="email"
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="your@email.com"
-              autoComplete="email"
-              required
-              aria-required="true"
-              aria-label="Enter your email address"
-              className="w-full px-4 md:px-5 py-2.5 md:py-3 text-sm md:text-base bg-white/5 border border-white/10 rounded-lg text-white placeholder:text-white/40 focus:outline-none focus:bg-white/10 focus:border-blue-500/60 focus:ring-2 focus:ring-blue-500/10 transition-all duration-300"
-            />
-          </div>
+      <div className="max-w-5xl mx-auto">
+        <div className="reveal relative z-10 max-w-md mx-auto text-center">
+          <div className="hud-accent-line mx-auto" />
+          <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white tracking-tight">
+            {t.headline1[locale]}
+            <br />
+            <span className="text-gradient-cyan-white">{t.headline2[locale]}</span>
+          </h2>
 
-          {/* Honeypot field to prevent bots */}
-          <input
-            type="text"
-            name="website"
-            tabIndex={-1}
-            autoComplete="off"
-            aria-hidden="true"
-            className="absolute opacity-0 pointer-events-none"
-          />
+          <p className="text-lg md:text-xl text-[#D1D5DB] mt-8 mb-12 font-light leading-relaxed">
+            {t.subtitle[locale]}
+          </p>
 
-          <button
-            type="submit"
-            aria-label="Subscribe to Beebsi launch notifications"
-            className="w-full px-6 md:px-8 py-2.5 md:py-3 text-sm md:text-base font-semibold bg-blue-500 text-white rounded-lg hover:bg-blue-600 hover:-translate-y-1 hover:shadow-xl hover:shadow-blue-500/40 active:translate-y-0 transition-all duration-300"
+          <form
+            onSubmit={handleSubmit}
+            className="flex flex-col gap-3"
+            aria-label={t.formAriaLabel[locale]}
           >
-            Notify Me
-          </button>
-        </form>
+            <div>
+              <label htmlFor="email-input" className="sr-only">
+                {t.emailLabel[locale]}
+              </label>
+              <input
+                id="email-input"
+                name="email"
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder={t.placeholder[locale]}
+                autoComplete="email"
+                required
+                aria-required="true"
+                aria-label={t.emailAriaLabel[locale]}
+                className="w-full px-5 py-3 text-base bg-white/[0.04] border border-cyan-500/15 rounded-xl text-white placeholder:text-white/30 focus:outline-none focus:bg-white/[0.06] focus:border-cyan-500/40 focus:ring-2 focus:ring-cyan-500/10 transition-all duration-300"
+              />
+            </div>
 
-        {submitted && (
-          <div className="mt-6 p-6 bg-green-500/15 border-2 border-green-500/40 rounded-2xl text-green-400 text-center text-lg">
-            ✓ You're on the list! We'll notify you when Beebsi launches.
-          </div>
-        )}
+            {/* Honeypot */}
+            <input
+              type="text"
+              name="website"
+              tabIndex={-1}
+              autoComplete="off"
+              aria-hidden="true"
+              className="absolute opacity-0 pointer-events-none"
+            />
 
-        <p className="mt-8 text-center text-white/50 text-lg font-light">
-          Coming 2026 to iOS.
-        </p>
-      </article>
+            <button
+              type="submit"
+              aria-label={t.submitAriaLabel[locale]}
+              className="w-full px-8 py-3 text-base font-semibold bg-white text-black rounded-xl hover:bg-white/90 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-cyan-500/10 active:translate-y-0 transition-all duration-200"
+            >
+              {t.submitButton[locale]}
+            </button>
+          </form>
+
+          {submitted && (
+            <div className="mt-6 p-4 bg-cyan-500/10 border border-cyan-500/30 rounded-xl text-cyan-400 text-center text-sm">
+              {t.successMessage[locale]}
+            </div>
+          )}
+
+          <p className="mt-10 text-sm text-white/30 font-light">
+            {t.footerNote[locale]}
+          </p>
+        </div>
+      </div>
     </section>
   );
 }
