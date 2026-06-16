@@ -657,9 +657,9 @@ export const translations = {
       en: 'Social',
       pl: 'Social',
     },
-    linkTwitter: {
-      en: 'X (Twitter)',
-      pl: 'X (Twitter)',
+    linkInstagram: {
+      en: 'Instagram',
+      pl: 'Instagram',
     },
     copyright: {
       en: 'Beebsi. All rights reserved.',
